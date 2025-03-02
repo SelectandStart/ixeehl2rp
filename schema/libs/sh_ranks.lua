@@ -252,7 +252,7 @@ if (SERVER) then
         return false
     end
 
-    function GM:PlayerJoinedRank(client, rank, oldRank)
+    function GAMEMODE:PlayerJoinedRank(client, rank, oldRank)
         local info = ix.rank.list[rank]
         local info2 = ix.rank.list[oldRank]
 
