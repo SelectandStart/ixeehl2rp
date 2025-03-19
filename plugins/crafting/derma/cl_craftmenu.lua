@@ -239,7 +239,7 @@ function PANEL:OnRemove()
             continue
         end
 
-        v:Remove() 
+        v:Remove()
     end
 
     net.Start("ix.Crafting.ClosePanel")

@@ -41,10 +41,27 @@ function ix.crafting:RegisterRecipe(recipeTable)
         return
     end
 
-    if ( recipeTable.stations and not ix.crafting.stations[recipeTable.stations] ) then
-        ErrorNoHalt("recipeTable.stations contains a non valid station!\n")
 
-        return
+    local bValidStation = true
+    if ( recipeTable.stations ) then
+        if not ( istable(recipeTable.stations) ) then
+            ErrorNoHalt("recipeTable.stations is not a table!\n")
+
+            return
+        end
+
+        for k, v in pairs(recipeTable.stations) do
+            if not ( ix.crafting.stations[k] ) then
+                bValidStation = false
+                break
+            end
+        end
+
+        if not ( bValidStation ) then
+            ErrorNoHalt("recipeTable.stations contains a non valid station!\n")
+
+            return
+        end
     end
 
     recipeTable.model = recipeTable.model or "models/props_junk/cardboard_box004a.mdl"
@@ -164,8 +181,10 @@ function PLUGIN:CanCraftRecipe(ply, uniqueID)
     end
 
     if ( recipeData.stations ) then
-        if not ( recipeData.stations[ply:GetNetVar("ixCraftingStation", nil):GetStationID()] ) then
-            return false
+        for k, v in pairs(recipeData.stations) do
+            if ( ply:GetNetVar("ixCraftingStation", nil):GetStationID() != k ) then
+                return false
+            end
         end
     end
 
